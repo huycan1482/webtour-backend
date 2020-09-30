@@ -1,0 +1,42 @@
+.scroll-up i{
+    padding: 1rem;
+    font-size: 1rem;
+    background-color: #3498db;
+    border-radius: 100%;
+    color: #fff;
+}
+
+.scroll-up {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 3;
+    cursor: pointer;
+}
+
+.contact {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    z-index: 3;
+    cursor: pointer;
+    justify-content: start;
+}
+
+.contact i {
+    padding: 1rem;
+    font-size: 1rem;
+    background-color: #c0392b;
+    border-radius: 100%;
+    color: #fff;
+}
+
+.contact span {
+    background-color: #c0392b;
+    color: #fff;
+    padding: .5rem;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    /* display: none; */
+}
+

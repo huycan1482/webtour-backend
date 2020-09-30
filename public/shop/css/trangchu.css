@@ -1,0 +1,102 @@
+section {
+    /* background-image: url(../images/sidebar1.jpg); */
+    /* background-position: center; */
+    /* background-position-x: left ;     */
+    background-repeat: round;
+    /* background-color: #f1f2f6; */
+    /* filter: blur(); */
+}
+
+.discount img {
+    border-radius: 5px;
+    width: 100%;
+    height: 250px;
+    margin: 20px 0;
+}
+
+.discount-register {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.discount-register a {
+    padding: 15px 25px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #d35400;
+    border-radius: 5px;
+}
+
+.discount-register a:hover {
+    background-color: #c0392b;
+    color: #fff;
+}
+
+.discount-register i {
+    margin-left: 5px;
+}
+
+.introduce-content {
+    display: flex;
+    justify-content: center;
+}
+
+.introduces {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+/* .introduces:nth-of-type(even) {
+    flex-direction: row-reverse;
+    justify-content: flex-end !important;
+} */
+
+/* .introduces:nth-of-type(even) h4 {
+    text-align: right !important;
+} */
+
+/* .introduces:nth-of-type(even) ul{
+    text-align: right !important;
+} */
+
+.introduces div {
+    flex-direction: column;
+}
+
+.introduces ul {
+    text-align: left;
+}
+
+.introduces i {
+    margin: 0 20px;
+    font-size: 4rem;
+    color: #34495e;
+    text-align: center;
+}
+
+.register form {
+    position: relative;
+    width: 50%;
+    margin: auto;
+}
+
+.register form button {
+    border: 1px solid transparent;
+    position: absolute;
+    right: 20px;
+    top: 7px;
+    background-color: transparent;
+}
+
+.register form button i {
+    font-size: 20px;
+    color: #3498db;
+}
+
+.register form input{
+    padding: 10px;
+    border-radius: 5px;
+}
+

@@ -1,0 +1,44 @@
+.lg-banner {
+    width: 100%;
+    height: 530px;
+    background-image: url(../images/lg-banner.jpg);
+    background-size: cover;
+    /* background-position: center; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lg-banner div {
+    /* width: 70%; */
+    padding: 2rem ;
+    background-color: #3498db;
+    opacity: 0.9;
+    border-radius: 10px;
+}
+
+.lg-banner h2 {
+    font-size: 30px;
+    color: #fff;
+}
+
+.lg-banner form {
+    position: relative;
+}
+
+.lg-banner form input{ 
+    border-radius: 5px;
+    border: 1px solid transparent;
+    padding: .5rem;
+    width: 100%;
+}
+
+.lg-banner button {
+    position: absolute;
+    right: 1rem;
+    top: 0.4rem;
+    border: 1px solid transparent;
+    background-color: transparent;
+    color: #2980b9;
+}
+

@@ -1,0 +1,143 @@
+#carouselExampleControls img {
+    height: 30rem;
+}
+
+.detail-title {
+    text-align: center;
+    margin: 2rem 0;
+    font-size: 2rem;
+    text-align: left;
+    color: #2980b9;
+}
+
+section .box-tour h3 {
+    color: #636e72;
+    border-bottom: .5px solid #bdc3c7;
+    padding: 1rem 0;
+    /* margin: 90px 0 0; */
+}
+
+/* .book-tour {
+    margin: 1rem 0;
+} */
+
+.box-tour i {
+    margin-right: 1rem;
+}
+
+.tour-title {
+    margin-bottom: .5rem;
+    padding: 0.5rem;
+    border: 1px solid #bdc3c7;
+    border-radius: .3rem;
+}
+
+.tour-title p {
+    font-size: 16px;
+    font-weight: 700;
+    color: #3498db;
+}
+
+.tour-title li {
+    border-bottom: 1px solid #bdc3c7;
+    padding: 1rem;
+    display: flex;
+}
+
+.tour-title li div {
+    width: 50%;
+}
+
+.tour-title li div:first-child {
+    font-weight: 700;
+}
+
+.tour-title li:last-child {
+    border-bottom: none;
+}
+
+.book-tour a:hover {
+    color: #fff;
+    transition: .5s;
+    transition-timing-function: ease-in-out;
+    background-color: #2980b9;
+}
+
+.book-tour a {
+    display: block;
+    text-align: center;
+    padding: 1rem;
+    color: #fff;
+    background-color: #c23616;
+    font-weight: 700;
+    border-radius: 5px;
+    transition: .8s;
+    transition-timing-function: ease-in-out;
+}
+
+.tour-gist {
+    margin: 1rem 0;
+}
+
+.tour-gist li {
+    background-color: #3498db;
+    border-radius: .2rem;
+    margin: .1rem 0;
+    transition: .5s;
+    transition-timing-function: ease-in-out;
+}
+
+.tour-gist li:hover {
+    transition: .8s;
+    transition-timing-function: ease-in-out;
+    background-color: #c23616;
+}
+
+.tour-gist a:hover {
+    color:#fff;
+}
+
+.tour-gist a {
+    font-weight: 700;
+    color: #fff;
+    display: block;
+    padding: .5rem;
+}
+
+.tour-gist i {
+    margin-right: .5rem;
+}
+
+.right-side-bar-position {
+    position: fixed !important;
+    top: 30px;
+    right: 190px;
+    z-index: 100;
+    max-width: 25% !important;
+}
+
+td:first-child{
+    width: 20%;
+    text-align: left;
+    padding: 5px;
+    font-weight: 700;
+    color: #34495e;
+}
+
+.box-tour ul {
+    list-style-type: square;
+}
+
+.top-right-sidebar {
+    margin: 2rem 0 1rem;
+    padding: 1rem;
+    background-color: #8e44ad;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: .2rem;
+}
+
+.carousel-item img{
+    border-radius: 5px;
+}

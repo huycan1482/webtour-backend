@@ -1,0 +1,55 @@
+h6 i {
+    margin-left: .5rem;
+    font-size: .7rem;
+}
+
+.search {
+    position: relative;
+}
+
+.search button {
+    position: absolute;
+    right: 1rem;
+    top: 0.4rem;
+    border: 1px solid transparent;
+    background-color: transparent;
+    color: #2980b9;
+}
+
+.top-content {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 1rem;
+    border: 1px solid transparent;
+    padding: .5rem;
+    background-color: #8e44ad;
+    color: #fff;
+    border-radius: .2rem;
+}
+
+.top-content span {
+    padding-top: .3rem;
+    font-weight: bold;
+}
+
+.top-content ul {
+    display: flex;
+    margin: 0;
+}
+
+.top-content ul li {
+    padding: .3rem;
+    cursor: pointer;
+}
+
+.pagination {
+    justify-content: flex-end;
+}
+
+.side-bar-position {
+    position: fixed !important;
+    top: 65px;
+    right: 205px;
+    z-index: 100;
+    max-width: 24.3% !important;
+}
