@@ -51,7 +51,7 @@
     @if (isset($finish) && $finish == 'true')
         {{-- {{ 'onload' }} --}}
     @endif
->
+
         @include('shop.layouts.header')
 
         <div class="scroll-up">

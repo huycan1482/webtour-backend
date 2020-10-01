@@ -1,0 +1,1 @@
+Mã đổi mật khẩu cả bạn là: {{ $val }}

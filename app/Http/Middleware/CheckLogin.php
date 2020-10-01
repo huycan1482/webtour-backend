@@ -18,7 +18,7 @@ class CheckLogin
     {
         
         if ( Auth::user() == null ){
-            return redirect()->route('dang_nhap');
+            return redirect()->route('login');
         } else {
             // dd(Auth::user());
             return $next($request);

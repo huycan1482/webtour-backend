@@ -9,13 +9,49 @@
     <link rel="stylesheet" href="backend/login/login.css">
 
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    
+    
 </head>
 
 <body>
+
+{{-- @if (session('success_mess'))
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLongTitle" style="color: #2980b9;">My Tours</h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="thank">
+                    <p> {{session('success_mess')}} </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+              
+                <a class="btn btn-primary extension" href="/">Tới trang chủ</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(window).load(function () {
+        $('#exampleModalCenter').modal('show');
+    });
+</script>
+@endif --}}
+
     <div class="body-wrapper">
         <!-- <div class="filter"></div> -->
         <div class="login-form">
@@ -42,12 +78,17 @@
                 <div class="submit">
                     <button>Đăng nhập</button>
                 </div>
+                {{-- <div > --}}
+                <a class="pass-forgot" href="/pass_forgot">Quên mật khẩu?</a>
+                {{-- </div> --}}
 
                 <!-- </div> -->
             </form>
 
         </div>
     </div>
+
+
 </body>
 
 </html>

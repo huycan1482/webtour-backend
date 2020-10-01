@@ -106,14 +106,14 @@ class OrderTourController extends Controller
             $order->order_status_id = 1;
             $tour->member_num += 1; 
         
-            // $order->save();
-            // $tour->save();
+            $order->save();
+            $tour->save();
 
             $position = Position::where(['is_active' => 1])->get();
 
             $tour = Tour::findOrFail($id);
             
-            // Mail::to($order->user_mail)->send(new ShoppingMail($order));
+            Mail::to($order->user_mail)->send(new ShoppingMail($order, 'shopping'));
 
         }
         return view ('shop.order', [ 

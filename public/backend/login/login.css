@@ -106,3 +106,20 @@ form {
 .errors-msg {
     color: #c0392b;
 }
+
+.pass-forgot {
+    text-align: center;
+    margin-top: 10px;
+    color: #f5f6fa;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.pass-forgot:hover {
+    color: #f5f6fa;
+    text-decoration: none;
+}
+
+.login-form p {
+    margin: 10px 0;
+}

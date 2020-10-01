@@ -45,17 +45,18 @@ Route::post('/thanh-toan-tour', 'OrderTourController@storeOrder')->name('shop.ch
 // Route::get('/thanh-toan-tour/update', 'OrderTourController@updateOrder')->name('shop.order');
 // Route::get('/thanh-toan');
 
-// <a href="/danh-muc/{{ $tag->slug }}">{{ $tag->name}}</a>
-
 // Route::get('/categories/{slug}', 'ShopController@getListCategories')->name('shop.list-categories');
 
-// Route::resource('roles', 'RoleController');
+Route::get('/pass_forgot', 'Auth\ForgotPasswordController@index')->name('passForgot');
+Route::get('/check_code', 'Auth\ForgotPasswordController@checkCode');
 
+Route::post('/check_email', 'Auth\ForgotPasswordController@checkEmail');
+Route::post('/reset_password', 'Auth\ForgotPasswordController@resetPassword')->name('resetPassword');
+Route::post('/new_password', 'Auth\ForgotPasswordController@newPassword');
 
-
-Route::get('/login', 'LoginController@index')->name('dang_nhap');
-Route::post('/postLogin', 'LoginController@postLogin');
-Route::get('/logout', 'LoginController@logout')->name('dang_xuat');
+Route::get('/login', 'Auth\LoginController@index')->name('login');
+Route::post('/postLogin', 'Auth\LoginController@postLogin');
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::group(['middleware' => 'checkLogin'], function () {
     Route::get('admin/category/search', 'AdminController@searchCategory')->name('category.search');

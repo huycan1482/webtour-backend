@@ -191,8 +191,10 @@
 
         $(document).on('change', '#location', function() {
             var val = $(this).val();
-
-            urlParams.set('diem-den', val);
+            if (val == '') 
+                urlParams.delete('diem-den');
+            else
+                urlParams.set('diem-den', val);
             // console.log(pathname + "?" +decodeURIComponent(urlParams.toString()));
             
             window.location.href = pathname + "?" +decodeURIComponent(urlParams.toString());
@@ -200,19 +202,28 @@
 
         $(document).on('change', '#number', function() {
             var val = $(this).val();
-            urlParams.set('tinh-trang-cho', val);
+            if (val == '') 
+                urlParams.delete('tinh-trang-cho');
+            else
+                urlParams.set('tinh-trang-cho', val);
             window.location.href = pathname + "?" +decodeURIComponent(urlParams.toString());
         });
 
         $(document).on('change', '#time', function() {
             var val = $(this).val();
-            urlParams.set('thoi-gian', val);
+            if (val == '') 
+                urlParams.delete('thoi-gian');
+            else
+                urlParams.set('thoi-gian', val);
             window.location.href = pathname + "?" +decodeURIComponent(urlParams.toString());
         });
 
         $(document).on('change', '#status', function() {
             var val = $(this).val();
-            urlParams.set('trang-thai', val);
+            if (val == '') 
+                urlParams.delete('trang-thai');
+            else
+                urlParams.set('trang-thai', val);
             window.location.href = pathname + "?" +decodeURIComponent(urlParams.toString());
         });
 
