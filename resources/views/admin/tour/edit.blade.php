@@ -31,7 +31,7 @@
                             <div class="form-group">
                         @endif
                             <label>Tên</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Nhập tên tour" value=" {{ $tour->name }} ">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Nhập tên tour" value="{{(old('name')) ? old('name') : $tour->name }}">
                             <span class="help-block">{{ $errors->first('name') }}</span>
                         </div>
 
@@ -45,7 +45,7 @@
                             <select class="form-control" name="category_id">
                                 <option value="">-- Chọn --</option>
                                 @foreach ($categories as $item)
-                                    <option value=" {{ $item->id }} " {{ ($tour->category_id == $item->id) ? 'selected' : '' }}> {{ $item->name }}</option>
+                                    <option value=" {{ $item->id }} " {{  ($tour->category_id == $item->id) ? 'selected' : '' }}> {{ $item->name }}</option>
                                 @endforeach
                             </select>
                             <span class="help-block">{{ $errors->first('category_id') }}</span>
@@ -87,7 +87,7 @@
                                     <i class="fa fa-calendar"></i>
                                 </div>
                                 <input type="text" class="form-control pull-right datepicker" name="start_date"
-                                    placeholder="DD/MM/YYYY" value=" {{ date_format(date_create($tour->start_date), 'd-m-Y')}} ">
+                                    placeholder="DD/MM/YYYY" value=" {{(old('start_date')) ? old('start_date') : date_format(date_create($tour->start_date), 'd-m-Y')}} ">
                             </div>
                             <span class="help-block">{{ $errors->first('start_date') }}</span>
                         </div>
@@ -104,7 +104,7 @@
                                     <i class="fa fa-calendar"></i>
                                 </div>
                                 <input type="text" class="form-control pull-right datepicker" name="end_date"
-                                    placeholder="DD/MM/YYYY" value=" {{ date_format(date_create($tour->end_date), 'd-m-Y')}} ">
+                                    placeholder="DD/MM/YYYY" value=" {{(old('end_date')) ? old('end_date') : date_format(date_create($tour->end_date), 'd-m-Y')}} ">
                             </div>
                             <span class="help-block">{{ $errors->first('end_date') }}</span>
                         </div>
@@ -116,7 +116,7 @@
                             <div class="form-group">
                         @endif
                             <label for="exampleInputPassword1">Lịch trình</label>
-                            <textarea id="editor1" name="schedule" class="form-group rows=" 10">{{ $tour->schedule }}</textarea>
+                            <textarea id="editor1" name="schedule" class="form-group rows=" 10">{{(old('schedule')) ? old('schedule') : $tour->schedule }}</textarea>
                             <span class="help-block">{{ $errors->first('schedule') }}</span>
                         </div>
 
@@ -127,7 +127,7 @@
                             <div class="form-group">
                         @endif
                             <label for="exampleInputPassword1">Ghi chú</label>
-                            <textarea id="editor" name="note" class="form-group rows=" 10">{{ $tour->note }}</textarea>
+                            <textarea id="editor" name="note" class="form-group rows=" 10">{{(old('note')) ? old('note') : $tour->note }}</textarea>
                             <span class="help-block">{{ $errors->first('note') }}</span>
                         </div>
 
@@ -170,7 +170,7 @@
                         @endif
                             <label>Số lượng người của tour</label>
                             <input type="number" class="form-control" name="total_num" placeholder="Số lượng người"
-                                min="0" value="{{ $tour->total_num  }}">
+                                min="0" value="{{(old('total_num')) ? old('total_num') : $tour->total_num  }}">
                             <span class="help-block">{{ $errors->first('total_num') }}</span>
                         </div>
 
@@ -181,7 +181,7 @@
                         @endif
                             <label>Số lượng người đã đặt Tour</label>
                             <input type="number" class="form-control" name="member_num" placeholder="Số lượng người đã đặt Tour"
-                                min="0" value="{{ $tour->member_num }}">
+                                min="0" value="{{(old('member_num')) ? old('member_num') : $tour->member_num }}">
                             <span class="help-block">{{ $errors->first('member_num') }}</span>
                         </div>
 
@@ -191,7 +191,7 @@
                             <div class="form-group">
                         @endif
                             <label>Giá</label>
-                            <input type="number" class="form-control" name="price" placeholder="Giá" min="0" value="{{ $tour->price }}">
+                            <input type="number" class="form-control" name="price" placeholder="Giá" min="0" value="{{(old('price')) ? old('price') : $tour->price }}">
                             <span class="help-block">{{ $errors->first('price') }}</span>
                         </div>
 
@@ -201,7 +201,7 @@
                             <div class="form-group">
                         @endif
                             <label>Giá cho trẻ dưới 2 tuổi</label>
-                            <input type="number" class="form-control" name="price_1_2" placeholder="Giá" min="0" value="{{$tour->price_1_2}}">
+                            <input type="number" class="form-control" name="price_1_2" placeholder="Giá" min="0" value="{{(old('price_1_2')) ? old('price_1_2') : $tour->price_1_2}}">
                             <span class="help-block">{{ $errors->first('price_1_2 ') }}</span>
                         </div>
 
@@ -211,7 +211,7 @@
                             <div class="form-group">
                         @endif
                             <label>Giá cho trẻ từ 2 đến dưới 5 tuổi</label>
-                            <input type="number" class="form-control" name="price_2_5" placeholder="Giá" min="0" value="{{ $tour->price_2_5 }}">
+                            <input type="number" class="form-control" name="price_2_5" placeholder="Giá" min="0" value="{{(old('price_2_5')) ? old('price_2_5') : $tour->price_2_5 }}">
                             <span class="help-block">{{ $errors->first('price_2_5') }}</span>
                         </div>
 
@@ -221,7 +221,7 @@
                             <div class="form-group">
                         @endif
                             <label>Giá cho từ 5 đến dưới 11 tuổi</label>
-                            <input type="number" class="form-control" name="price_5_11" placeholder="Giá" min="0" value="{{$tour->price_5_11}}">
+                            <input type="number" class="form-control" name="price_5_11" placeholder="Giá" min="0" value="{{(old('price_5_11')) ? old('price_5_11') : $tour->price_5_11}}">
                             <span class="help-block">{{ $errors->first('price_5_11') }}</span>
                         </div>
 
@@ -231,7 +231,7 @@
                             <div class="form-group">
                         @endif
                             <label>Giá Visa nếu có</label>
-                            <input type="number" class="form-control" name="visa_price" placeholder="Giá" min="0" value="{{ $tour->visa_price }}">
+                            <input type="number" class="form-control" name="visa_price" placeholder="Giá" min="0" value="{{(old('visa_price')) ? old('visa_price') : $tour->visa_price }}">
                             <span class="help-block">{{ $errors->first('visa_price') }}</span>
                         </div>
 
@@ -242,7 +242,7 @@
                             <div class="form-group">
                         @endif
                             <label>Giảm giá</label>
-                            <input type="number" class="form-control" name="discount" placeholder="Giảm giá" min="0" value="{{ $tour->discount}}"> 
+                            <input type="number" class="form-control" name="discount" placeholder="Giảm giá" min="0" value="{{(old('discount')) ? old('discount') : $tour->discount}}"> 
                             <span class="help-block">{{ $errors->first('discount') }}</span>
                         </div>
 
@@ -253,7 +253,7 @@
                             <div class="form-group">
                         @endif
                             <label for="">Vị trí</label>
-                            <input type="number" class="form-control"  name="position" value="{{ $tour->position }}">
+                            <input type="number" class="form-control"  name="position" value="{{(old('position')) ? old('position') : $tour->position }}">
                             <span class="help-block">{{ $errors->first('position') }}</span>
                         </div>
 

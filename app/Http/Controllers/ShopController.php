@@ -108,7 +108,7 @@ class ShopController extends GeneralController
 
         $total = count($query->get()); 
 
-        $list = $query->paginate(10);
+        $list = $query->paginate(5);
 
         return view ('shop.search', [
             'setting' => $this->settings,
@@ -134,7 +134,7 @@ class ShopController extends GeneralController
         // dd($sort_date, $sort_price);
         $total = count($query->get());
 
-        $list = $query->paginate(10);
+        $list = $query->paginate(5);
 
         // dd($list->lastPage());
 
@@ -233,7 +233,7 @@ class ShopController extends GeneralController
             }
         }
 
-        $list = $query->paginate(2);
+        $list = $query->paginate(5);
 
         $total = $list->count();
 

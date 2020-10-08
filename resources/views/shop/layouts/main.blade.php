@@ -47,10 +47,10 @@
     <!-- wowjs -->
 </head>
 
-<body 
-    @if (isset($finish) && $finish == 'true')
-        {{-- {{ 'onload' }} --}}
-    @endif
+<body>
+    {{-- @if (isset($finish) && $finish == 'true')
+        
+    @endif --}}
 
         @include('shop.layouts.header')
 

@@ -83,7 +83,7 @@ class ImageController extends Controller
         if ($request->has('is_active')) {
             $is_active = $request->input('is_active');  
         } 
-        $image->is_active = $is_active;
+        $image->is_active = json_decode($is_active);
         // dd($image);
         $image->user_id = Auth::user()->id;
         $image->save();
@@ -171,7 +171,7 @@ class ImageController extends Controller
         if ($request->has('is_active')) {
             $is_active = $request->input('is_active');          
         }
-        $image->is_active = $is_active;
+        $image->is_active = json_decode($is_active);
         $image->user_id = Auth::user()->id;
         $image->save();
 

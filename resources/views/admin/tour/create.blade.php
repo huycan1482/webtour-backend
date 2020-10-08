@@ -29,11 +29,10 @@
                         @else
                             <div class="form-group">
                         @endif
-                            <label>Tên</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Nhập tên tour">
+                            <label>Tên</label>  
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Nhập tên tour" value="{{(old('name')) ? old('name') : '' }}"> 
                             <span class="help-block">{{ $errors->first('name') }}</span>
                         </div>
-
 
                         @if ($errors->has('category_id'))
                             <div class="form-group has-error">
@@ -44,7 +43,7 @@
                             <select class="form-control" name="category_id">
                                 <option value="0">-- chọn --</option>
                                 @foreach ($categories as $item )
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->id }}" {{ ($item->id == old('category_id') ? 'selected' : '') }}>{{ $item->name }}</option>
                                 @endforeach
                             </select>
                             <span class="help-block">{{ $errors->first('category_id') }}</span>
@@ -57,7 +56,7 @@
                             <div class="form-group">
                         @endif
                             <label for="exampleInputFile">Ảnh</label>
-                            <input type="file" id="image" name="image">
+                            <input type="file" id="image" name="image" value="{{(old('image')) ? old('image') : '' }}">
                             <span class="help-block">{{ $errors->first('image') }}</span>
                         </div>
 
@@ -73,11 +72,10 @@
                                     <i class="fa fa-calendar"></i>
                                 </div>
                                 <input type="text" class="form-control pull-right datepicker" name="start_date"
-                                    placeholder="MM/DD/YYYY">
+                                    placeholder="DD-MM-YYYY" value="{{(old('start_date')) ? old('start_date') : '' }}">
                             </div>
                             <span class="help-block">{{ $errors->first('start_date') }}</span>
                         </div>
-
 
                         @if ($errors->has('end_date'))
                             <div class="form-group has-error">
@@ -90,7 +88,7 @@
                                     <i class="fa fa-calendar"></i>
                                 </div>
                                 <input type="text" class="form-control pull-right datepicker" name="end_date"
-                                    placeholder="MM/DD/YYYY">
+                                    placeholder="DD-MM-YYYY" value="{{(old('end_date')) ? old('end_date') : '' }}">
                             </div>
                             <span class="help-block">{{ $errors->first('end_date') }}</span>
                         </div>
@@ -102,7 +100,7 @@
                             <div class="form-group">
                         @endif
                             <label for="exampleInputPassword1">Lịch trình</label>
-                            <textarea id="editor1" name="schedule" class="form-group rows=" 10"></textarea>
+                            <textarea id="editor1" name="schedule" class="form-group rows=" 10" value="">{{(old('schedule')) ? old('schedule') : '' }}</textarea>
                             <span class="help-block">{{ $errors->first('schedule') }}</span>
                         </div>
 
@@ -113,7 +111,7 @@
                             <div class="form-group">
                         @endif
                             <label for="exampleInputPassword1">Ghi chú</label>
-                            <textarea id="editor" name="note" class="form-group rows=" 10"></textarea>
+                            <textarea id="editor" name="note" class="form-group rows=" 10" value="">{{(old('note')) ? old('note') : '' }}</textarea>
                             <span class="help-block">{{ $errors->first('note') }}</span>
                         </div>
 
@@ -127,7 +125,7 @@
                             <select class="form-control" name="transport_id">
                                 <option value="0">-- chọn --</option>
                                 @foreach ($transports as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->id }}" {{ ($item->id == old('transport_id')) ? 'selected' : '' }} >{{ $item->name }}</option>
                                 @endforeach
                             </select>
                             <span class="help-block">{{ $errors->first('transport_id') }}</span>
@@ -143,7 +141,7 @@
                             <select class="form-control" name="starting_position">
                                 <option value="0">-- chọn --</option>
                                 @foreach ($positions as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name}}</option>
+                                    <option value="{{ $item->id }}" {{ ($item->id == old('starting_position')) ? 'selected' : '' }} >{{ $item->name}}</option>
                                 @endforeach
                             </select>
                             <span class="help-block">{{ $errors->first('starting_position') }}</span>
@@ -156,7 +154,7 @@
                         @endif
                             <label>Số lượng người của tour</label>
                             <input type="number" class="form-control" name="total_num" placeholder="Số lượng người"
-                                min="0">
+                                min="0" value="{{(old('total_num')) ? old('total_num') : '' }}">
                             <span class="help-block">{{ $errors->first('total_num') }}</span>
                         </div>
 
@@ -167,7 +165,7 @@
                         @endif
                             <label>Số lượng người đã đặt tour</label>
                             <input type="number" class="form-control" name="member_num" placeholder="Số lượng người đã đặt"
-                                min="0">
+                                min="0" value="{{(old('member_num')) ? old('member_num') : '' }}">
                             <span class="help-block">{{ $errors->first('member_num') }}</span>
                         </div>
 
@@ -177,7 +175,7 @@
                             <div class="form-group">
                         @endif
                             <label>Giá</label>
-                            <input type="number" class="form-control" name="price" placeholder="Giá" min="0">
+                            <input type="number" class="form-control" name="price" placeholder="Giá" min="0" value="{{(old('price')) ? old('price') : '' }}">
                             <span class="help-block">{{ $errors->first('price') }}</span>
                         </div>
 
@@ -187,7 +185,7 @@
                             <div class="form-group">
                         @endif
                             <label>Giá cho trẻ dưới 2 tuổi</label>
-                            <input type="number" class="form-control" name="price_1_2" placeholder="Giá" min="0">
+                            <input type="number" class="form-control" name="price_1_2" placeholder="Giá" min="0" value="{{(old('price_1_2')) ? old('price_1_2') : '' }}">
                             <span class="help-block">{{ $errors->first('price_1_2 ') }}</span>
                         </div>
 
@@ -197,7 +195,7 @@
                             <div class="form-group">
                         @endif
                             <label>Giá cho trẻ từ 2 đến dưới 5 tuổi</label>
-                            <input type="number" class="form-control" name="price_2_5" placeholder="Giá" min="0">
+                            <input type="number" class="form-control" name="price_2_5" placeholder="Giá" min="0" value="{{(old('price_2_5')) ? old('price_2_5') : '' }}"> 
                             <span class="help-block">{{ $errors->first('price_2_5') }}</span>
                         </div>
 
@@ -207,7 +205,7 @@
                             <div class="form-group">
                         @endif
                             <label>Giá cho từ 5 đến dưới 11 tuổi</label>
-                            <input type="number" class="form-control" name="price_5_11" placeholder="Giá" min="0">
+                            <input type="number" class="form-control" name="price_5_11" placeholder="Giá" min="0" value="{{(old('price_5_11')) ? old('price_5_11') : '' }}">
                             <span class="help-block">{{ $errors->first('price_5_11') }}</span>
                         </div>
 
@@ -217,7 +215,7 @@
                             <div class="form-group">
                         @endif
                             <label>Giá Visa nếu có</label>
-                            <input type="number" class="form-control" name="visa_price" placeholder="Giá" min="0">
+                            <input type="number" class="form-control" name="visa_price" placeholder="Giá" min="0" value="{{(old('visa_price')) ? old('visa_price') : '' }}">
                             <span class="help-block">{{ $errors->first('visa_price') }}</span>
                         </div>
 
@@ -228,7 +226,7 @@
                             <div class="form-group">
                         @endif
                             <label>Giảm giá</label>
-                            <input type="number" class="form-control" name="discount" placeholder="Giảm giá" min="0">
+                            <input type="number" class="form-control" name="discount" placeholder="Giảm giá" min="0" value="{{(old('discount')) ? old('discount') : '' }}">
                             <span class="help-block">{{ $errors->first('discount') }}</span>
                         </div>
 
@@ -239,20 +237,38 @@
                             <div class="form-group">
                         @endif
                             <label for="">Vị trí</label>
-                            <input type="number" class="form-control" id="position" name="position" value="0" min="0">
+                            <input type="number" class="form-control" id="position" name="position" value="" min="0" value="{{(old('position')) ? old('position') : '' }}"> 
                             <span class="help-block">{{ $errors->first('position') }}</span>
                         </div>
 
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="1" name="is_hot"> Tour Hot ?
-                            </label>
+                        @if ($errors->has('is_hot'))
+                            <div class="form-group has-error">
+                        @else
+                            <div class="form-group">
+                        @endif
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="1" name="is_hot" {{ ( old('is_hot') == 1 ) ? 'checked' :'' }}> Tour Hot ?
+                                </label>
+                                <span class="help-block">{{ $errors->first('is_hot') }}</span>
+                            </div>
                         </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="1" name="is_active"> Trạng thái hiển thị
-                            </label>
+                        
+
+
+                        @if ($errors->has('is_active'))
+                            <div class="form-group has-error">
+                        @else
+                            <div class="form-group">
+                        @endif
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="1" name="is_active" {{ ( old('is_active') == 1 ) ? 'checked' :'' }}> Trạng thái hiển thị?
+                                </label>
+                                <span class="help-block">{{ $errors->first('is_active') }}</span>
+                            </div>
                         </div>
+                        
                     </div>
                     <!-- /.box-body -->
 

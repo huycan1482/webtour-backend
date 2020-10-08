@@ -88,7 +88,7 @@
 
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="0" name="is_active"> Trạng thái hiển thị
+                                <input type="checkbox" value="1" name="is_active"> Trạng thái hiển thị
                             </label>
                         </div>
                         

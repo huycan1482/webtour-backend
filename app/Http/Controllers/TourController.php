@@ -111,58 +111,89 @@ class TourController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate ([
-            'name' => 'required|max:255|min:10',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-            'category_id' => 'required|integer', 
-            'transport_id' => 'required|integer', 
-            'starting_position' => 'required|integer', 
-            'total_num' => 'required|integer',
-            'member_num'=> 'required|integer', 
-            'price' => 'required|integer',
-            'schedule' => 'required',
-            'note' => 'required',
-            'price_2_5' => 'integer',
-            'price_5_11' => 'integer', 
-            'price_1_2' => 'integer',  
-            'visa_price' => 'integer', 
+        // dd($request->input('start_date'));
 
-            'discount' => 'integer',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date'
+        // $cate [] = Category::where('is_active', 1)->get();
+        // dd($request->is_hot);
+        $request->validate ([
+            // 'name' => 'required|max:255|min:10|unique:tours',
+            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            // 'category_id' => 'required|integer|exists:categories,id', 
+            // 'transport_id' => 'required|integer|exists:transports,id', 
+            // 'starting_position' => 'required|integer|exists:positions,id', 
+            // 'total_num' => 'required|integer|min:2|max:45',
+            // 'member_num'=> 'required|integer|min:0|after_or_equal:total_num', 
+            'price' => 'required|integer|min:0|max:1000000000',
+            // 'schedule' => 'required|min:100',
+            // 'note' => 'required|min:100',
+            'price_1_2' => 'nullable|integer|min:0|max:price',
+            'price_2_5' => 'nullable|integer|min:0|max:price',
+            'price_5_11' => 'nullable|integer|min:0|max:price', 
+            'price_1_2' => 'nullable|integer|min:0|max:price',  
+            // 'visa_price' => 'nullable|integer|min:0|max:1000000000', 
+            // 'discount' => 'nullable|integer|min:0|after_or_equal:price',
+            // 'start_date' => 'required|date',
+            // 'end_date' => 'required|date|after:start_date',
+            // 'position' => 'integer|max:1|min:0', 
+            // 'is_active' => 'integer|max:1|min:0',
         ],[
             'name.required' => 'Yêu cầu không để trống',
-            'image.required' => 'Yêu cầu không để trống', 
-            'category_id.required' => 'Yêu cầu không để trống', 
-            'transport_id.required' => 'Yêu cầu không để trống', 
-            'starting_position.required' => 'Yêu cầu không để trống',  
-            'total_num.required' => 'Yêu cầu không để trống', 
-            'member_num.required' => 'Yêu cầu không để trống', 
-            'price.required' => 'Yêu cầu không để trống', 
-            'schedule.required' => 'Yêu cầu không để trống', 
-            'note.required' => 'Yêu cầu không để trống',
-            'start_date.required' => 'Yêu cầu không để trống',
-            'end_date.required' => 'Yêu cầu không để trống',
-
+            'name.unique' => 'Tên bị trùng',
             'name.min' => 'Tên phải có độ dài trên 10 kí tự',
             'name.max' => 'Tên phải có độ dài dưới 255 kí tự',
+            'image.required' => 'Yêu cầu không để trống', 
             'image.img' => 'Sai định dạng ảnh',
-
+            'category_id.required' => 'Yêu cầu không để trống', 
             'category_id.integer' => 'Sai định dạng số' ,
+            'category_id.exists' => 'Dữ liệu không phù hợp',
+            'transport_id.required' => 'Yêu cầu không để trống', 
+            'transport_id.exists' => 'Dữ liệu không phù hợp',
             'transport_id.integer' => 'Sai định dạng số' ,
-            'starting_position.integer' => 'Sai định dạng số' ,
-            'member_num.integer' => 'Sai định dạng số' ,
-            'total_num.integer' => 'Sai định dạng số',
+            'starting_position.required' => 'Yêu cầu không để trống',
+            'starting_position.exists' => 'Dữ liệu không hợp lệ', 
+            'starting_position.integer' => 'Sai định dạng số' , 
+            'total_num.required' => 'Yêu cầu không để trống',
+            'total_num.integer' => 'Sai đúng định dạng số',
+            'total_num.min' => 'Số lượng ít nhất là 2 người',
+            'total_num.max' => 'Số lượng nhiều nhất là 45 người', 
+            'member_num.required' => 'Yêu cầu không để trống', 
+            'member_num.integer' => 'Sai đúng định dạng số',
+            'member_num.min' => 'Số lượng nhỏ nhất là 0',
+            'member_num.after_or_equal' => 'Số lượng phải nhỏ hơn hoặc bằng số lượng người của Tour',
+            'price.required' => 'Yêu cầu không để trống', 
+            'price.integer' => 'Sai định dạng số',
+            'price.min' => 'Giá trị nhỏ nhất là 0',
+            'price.max' => 'Giá trị lớn nhất là 1000000000',
+            'schedule.required' => 'Yêu cầu không để trống',
+            'schedule.min' => 'Yêu cầu độ dài ít nhất 100 kí tự', 
+            'note.required' => 'Yêu cầu không để trống',
+            'note.min' => 'Yêu cầ độ dài ít nhất 100 kí tự',
+            'start_date.required' => 'Yêu cầu không để trống',
+            'end_date.required' => 'Yêu cầu không để trống',
             'price_1_2.integer' => 'Sai định dạng số' ,
+            'price_1_2.min' => 'Giá trị nhỏ nhất là 0',
+            'price_1_2.after' => 'Giá trị phải nhỏ hơn giá của Tour',
             'price_2_5.integer' => 'Sai định dạng số' ,
+            'price_2_5.min' => 'Giá trị nhỏ nhất là 0',
+            'price_2_5.after' => 'GIá trị phải nhỏ hơn giá của Tour',
             'price_5_11.integer' => 'Sai định dạng số' ,
+            'price_5_11.min' => 'Giá trị nhỏ nhất là 0',
+            'price_5_11.after' => 'Giá trị phải nhỏ hơn giá của Tour',
             'visa_price.integer' => 'Sai định dạng số' ,
-            'children_price.integer' => 'Sai định dạng số',
+            'visa_price.min' => 'Giá trị nhỏ nhất là 0',
+            'visa_price.max' => 'Giá trị lớn nhất là 1000000000',
             'discount.integer' => 'Sai định dạng số' ,
-
+            'discount.min' => 'Giá trị nhỏ nhất là 0',
+            'discount.after_or_equal' => 'Giá trị phải nhỏ hơn hoặc bằng giá của Tour',
             'start_date.date' => 'Sai định dạng ngày tháng',
             'end_date.date' => 'Sai định dạng ngày tháng',
-            'end_date.after' => 'Ngày kết thúc phải sau ngày khởi hành'
+            'end_date.after' => 'Ngày kết thúc phải sau ngày khởi hành',
+            'is_active.integer' => 'Sai kiểu dữ liệu',
+            'is_active.min' => 'Dữ liệu không được bé hơn 0',
+            'is_active.max' => 'Dữ liệu không được lớn hơn 1',
+            'position.integer' => 'Sai kiểu dữ liệu',
+            'position.min' => 'Dữ liệu không được bé hơn 0',
+            'position.max' => 'Dữ liệu không được lớn hơn 1',
         ]);
 
         $tour = new Tour();
@@ -201,16 +232,17 @@ class TourController extends Controller
         $is_active = 0;
         if ($request->has('is_active')) {
             $is_active = $request->input('is_active');
-            $tour->is_active = $is_active;
+            $tour->is_active = (int)($is_active);
         }
 
         $is_hot = 0;
         if ($request->has('is_hot')) {
             $is_hot = $request->input('is_hot');
-            $tour->is_hot = $is_hot;
+            $tour->is_hot = (int)($is_hot);
         }
         $tour->user_id = Auth::user()->id;
-        // dd($tour);
+        
+        dd($tour);
         $tour->save();
         
         return redirect()->route('admin.tour.index');
@@ -264,32 +296,84 @@ class TourController extends Controller
     {
         
         $request->validate ([
-            'name' => 'max:255|min:10',
+            'name' => 'max:255|min:10|unique:tours,name,'.$id,
             'new_image' => 'image|mimes:jpeg,png,jpg,gif,svg',
-            'category_id' => 'integer', 
-            'transport_id' => 'integer', 
-            'starting_position' => 'integer', 
-            'member_num'=> 'integer', 
-            'price_1_2' => 'integer' ,
-            'price_2_5' => 'integer' ,
-            'price_5_11' => 'integer' ,
-            'visa_price' => 'integer' ,
-            'discount' => 'integer'
-        ],[
+            'category_id' => 'required|integer|exists:categories,id', 
+            'transport_id' => 'required|integer|exists:transports,id', 
+            'starting_position' => 'required|integer|exists:positions,id', 
+            'total_num' => 'required|integer|min:2|max:45',
+            'member_num'=> 'required|integer|min:0|after_or_equal:total_num', 
+            'price' => 'required|integer|min:0|max:1000000000',
+            'schedule' => 'required|min:100',
+            'note' => 'required|min:100',
+            'price_2_5' => 'nullable|integer|min:0|after:price',
+            'price_5_11' => 'nullable|integer|min:0|after:price', 
+            'price_1_2' => 'nullable|integer|min:0|after:price',  
+            'visa_price' => 'nullable|integer|min:0|max:1000000000', 
+            'discount' => 'nullable|integer|min:0|after_or_equal:price',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'position' => 'integer|max:1|min:0',
+            'is_active' => 'integer|max:1|min:0',
+        ],[          
+            'name.required' => 'Yêu cầu không để trống',
+            'name.unique' => 'Tên bị trùng',
             'name.min' => 'Tên phải có độ dài trên 10 kí tự',
             'name.max' => 'Tên phải có độ dài dưới 255 kí tự',
+            'name.unique' => 'Tên bị trùng',
+            'new_image.required' => 'Yêu cầu không để trống', 
             'new_image.img' => 'Sai định dạng ảnh',
-
+            'category_id.required' => 'Yêu cầu không để trống', 
             'category_id.integer' => 'Sai định dạng số' ,
+            'category_id.exists' => 'Dữ liệu không phù hợp',
+            'transport_id.required' => 'Yêu cầu không để trống', 
+            'transport_id.exists' => 'Dữ liệu không phù hợp',
             'transport_id.integer' => 'Sai định dạng số' ,
-            'starting_position.integer' => 'Sai định dạng số' ,
-            'member_num.integer' => 'Sai định dạng số' ,
-            'price.integer' => 'Sai định dạng số' ,
+            'starting_position.required' => 'Yêu cầu không để trống',
+            'starting_position.exists' => 'Dữ liệu không hợp lệ', 
+            'starting_position.integer' => 'Sai định dạng số' , 
+            'total_num.required' => 'Yêu cầu không để trống',
+            'total_num.integer' => 'Sai đúng định dạng số',
+            'total_num.min' => 'Số lượng ít nhất là 2 người',
+            'total_num.max' => 'Số lượng nhiều nhất là 45 người', 
+            'member_num.required' => 'Yêu cầu không để trống', 
+            'member_num.integer' => 'Sai đúng định dạng số',
+            'member_num.min' => 'Số lượng nhỏ nhất là 0',
+            'member_num.after_or_equal' => 'Số lượng phải nhỏ hơn hoặc bằng số lượng người của Tour',
+            'price.required' => 'Yêu cầu không để trống', 
+            'price.integer' => 'Sai định dạng số',
+            'price.min' => 'Giá trị nhỏ nhất là 0',
+            'price.max' => 'Giá trị lớn nhất là 1000000000',
+            'schedule.required' => 'Yêu cầu không để trống',
+            'schedule.min' => 'Yêu cầu độ dài ít nhất 100 kí tự', 
+            'note.required' => 'Yêu cầu không để trống',
+            'note.min' => 'Yêu cầ độ dài ít nhất 100 kí tự',
+            'start_date.required' => 'Yêu cầu không để trống',
+            'end_date.required' => 'Yêu cầu không để trống',
             'price_1_2.integer' => 'Sai định dạng số' ,
+            'price_1_2.min' => 'Giá trị nhỏ nhất là 0',
+            'price_1_2.after' => 'Giá trị phải nhỏ hơn giá của Tour',
             'price_2_5.integer' => 'Sai định dạng số' ,
+            'price_2_5.min' => 'Giá trị nhỏ nhất là 0',
+            'price_2_5.after' => 'GIá trị phải nhỏ hơn giá của Tour',
             'price_5_11.integer' => 'Sai định dạng số' ,
+            'price_5_11.min' => 'Giá trị nhỏ nhất là 0',
+            'price_5_11.after' => 'Giá trị phải nhỏ hơn giá của Tour',
             'visa_price.integer' => 'Sai định dạng số' ,
-            'discount.integer' => 'Sai định dạng số' 
+            'visa_price.min' => 'Giá trị nhỏ nhất là 0',
+            'visa_price.max' => 'Giá trị lớn nhất là 1000000000',
+            'discount.integer' => 'Sai định dạng số' ,
+            'discount.min' => 'Giá trị nhỏ nhất là 0',
+            'discount.after_or_equal' => 'Giá trị phải nhỏ hơn hoặc bằng giá của Tour',
+            'start_date.date' => 'Sai định dạng ngày tháng',
+            'end_date.date' => 'Sai định dạng ngày tháng',
+            'end_date.after' => 'Ngày kết thúc phải sau ngày khởi hành',
+            'is_active.integer' => 'Sai kiểu dữ liệu',
+            'is_active.min' => 'Dữ liệu không được bé hơn 0',
+            'is_active.max' => 'Dữ liệu không được lớn hơn 1',
+            'position.integer' => 'Sai kiểu dữ liệu',
+            'position.min' => 'Dữ liệu không được bé hơn 0',
+            'position.max' => 'Dữ liệu không được lớn hơn 1',
         ]);
 
         $tour = Tour::findOrFail($id);
@@ -336,14 +420,15 @@ class TourController extends Controller
         if ($request->has('is_active')) {
             $is_active = $request->input('is_active');   
         }
-        $tour->is_active = $is_active;
+        $tour->is_active = json_decode($is_active);
         
         if ($request->has('is_hot')) {
             $is_hot = $request->input('is_hot');
             
         }
-        $tour->is_hot = $is_hot;
+        $tour->is_hot = json_decode($is_hot);
         $tour->user_id = Auth::user()->id;
+        // dd($tour);
         $tour->save();
         
         return redirect()->route('admin.tour.index');

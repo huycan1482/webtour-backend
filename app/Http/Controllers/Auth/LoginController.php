@@ -47,6 +47,7 @@ class LoginController extends Controller
 
     public function postLogin(Request $request)
     {
+        dd(Auth::guard('api'));
         if (Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
             return redirect('admin');
         } else {
