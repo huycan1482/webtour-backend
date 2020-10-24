@@ -52,6 +52,7 @@ class ForgotPasswordController extends Controller
             $code = random_int(100000, 999999);
             session()->put('code_passForgot',$code);
             session()->put('mail_passForgot',$request->input('email'));
+            session()->put('timeOut_passForgot', time()+900);
             Mail::to($request->input('email'))->send(new ShoppingMail($code, 'passForgot'));
             // dd(session()->get('token_passForgot'));
             return redirect('check_code');
@@ -68,6 +69,12 @@ class ForgotPasswordController extends Controller
 
     public function resetPassword(Request $request) 
     {
+        if (session()->get() < time()) {
+            session()->forget('code_passForgot');
+            session()->forget('mail_passForgot');
+            session()->forget('timeOut_passForgot');
+        }
+
         if (session()->get('code_passForgot') == $request->input('code')) {
             // dd('true',session()->get('code_passForgot'), session()->get('mail_passForgot'));
             return view('admin.login.newPass');
@@ -83,6 +90,13 @@ class ForgotPasswordController extends Controller
         $errors = [];
         $pass = $request->input('password');
         $re_pass = $request->input('re_password');
+
+        if (session()->get() < time()) {
+            session()->forget('code_passForgot');
+            session()->forget('mail_passForgot');
+            session()->forget('timeOut_passForgot');
+        }
+        
         // dd($pass, $re_pass);
         // $validate =  FacadesValidator::make($request->all(),[
         //     'password'=>'required'
@@ -112,6 +126,8 @@ class ForgotPasswordController extends Controller
             } else {
                 $user->password = bcrypt($request->input('password'));
                 // dd(session('success_mess'));
+                session()->forget('code_passForgot');
+                session()->forget('mail_passForgot');
                 // $user->save();
                 session()->put('success_mess', 'Cập nhập mật khẩu thành công');
                 return redirect('admin');

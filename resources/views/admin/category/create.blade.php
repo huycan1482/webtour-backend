@@ -20,81 +20,192 @@
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-
-                <form role="form" action="{{ route('admin.category.store') }}" method="post" enctype="multipart/form-data">
-                    @csrf
+                {{-- {{ dd(route('admin.category.store')) }} --}}
+                {{-- <form role="form" action="{{ route('admin.category.store') }}" method="post" enctype="multipart/form-data">
+                    @csrf --}}
+                    <form>
                     <div class="box-body">
-                        @if ($errors->has('name'))
-                            <div class="form-group has-error">
-                        @else
-                            <div class="form-group">
-                        @endif
+                        
+                        <div class="form-group" id="form-name">
                             <label>Tên</label>
                             <input type="text" class="form-control" id="name" name="name" placeholder="Nhập tên">
-                            <span class="help-block">{{ $errors->first('name') }}</span>
                         </div>
 
-                        @if ($errors->has('image'))
-                            <div class="form-group has-error">
-                        @else
-                            <div class="form-group">
-                        @endif
+                        
+                        <div class="form-group" id="form-image">
                             <label for="exampleInputFile">Ảnh</label>
-                            <input type="file" id="image" name="image">
-                            <span class="help-block">{{ $errors->first('image') }}</span>
+                            <input type="file" id="image" >
                         </div>
 
-                        @if ($errors->has('parent_id'))
-                            <div class="form-group has-error">
-                        @else
-                            <div class="form-group">
-                        @endif
+                        {{-- <div id="ckfinder1" name="image">
+                        
+                        </div> --}}
+
+                        <div class="form-group" id="form-parent_id">
                             <label>Danh mục cha</label>
-                            <select class="form-control" name="parent_id">
-                                <option value="0">-- chọn --</option>
+                            <select class="form-control" name="parent_id" id="parent_id">
+                                <option value="">-- chọn --</option>
                                 @foreach($data as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
-                            <span class="help-block">{{ $errors->first('parent_id') }}</span>
                         </div>
 
-                        @if ($errors->has('position'))
-                            <div class="form-group has-error">
-                        @else
-                            <div class="form-group">
-                        @endif
+                        <div class="form-group" id="form-position">
                             <label for="">Vị trí hiển thị</label>
                             <input type="number" class="form-control" id="position" name="position" value="0" min="0">
-                            <span class="help-block">{{ $errors->first('position') }}</span>
                         </div>
 
-                        <div class="checkbox">
+                        <div class="checkbox form-group" id="form-is_hot">
                             <label>
-                                <input type="checkbox" value="1" name="is_hot"> Địa điểm Hot ?
+                                <input type="checkbox" value="1" name="is_hot" id="is_hot"> Địa điểm Hot ?
                             </label>
                         </div>
 
-                        <div class="checkbox">
+                        <div class="checkbox form-group" id="form-is_active">
                             <label>
-                                <input type="checkbox" value="1" name="is_active"> Trạng thái hiển thị
+                                <input type="checkbox" value="1" name="is_active" id="is_active"> Trạng thái hiển thị
                             </label>
                         </div>
                         
                     </div>
+                    
                     <!-- /.box-body -->
 
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">Tạo</button>
+                        <a class="btn btn-primary" onclick="addCate()">Add</a>
+                        <button type="reset" class="btn btn-danger">Reset</button>
                     </div>
                 </form>
             </div>
             <!-- /.box -->
-
+            
 
         </div>
         <!--/.col (right) -->
     </div>
     <!-- /.row -->
 </section>
+@endsection
+
+{{-- @section('ck_finder')
+
+<script>
+    // CKEDITOR.replace('description');
+    CKFinder.widget( 'ckfinder1', {
+        
+    } );
+</script>
+    
+@endsection --}}
+
+@section('my_script')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <script>
+        function addCate() {
+            // $.ajaxSetup({
+            //     headers: {
+            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //     }
+            // });
+
+            var name = document.getElementById('name').value;
+            var image = document.getElementById('image').value;
+            var parent_id = document.getElementById('parent_id').value;
+            var position = document.getElementById('position').value;
+            var is_hot = document.getElementById('is_hot').value;
+            var is_active = document.getElementById('is_active').value; 
+
+            var data;
+            data = new FormData();
+            data.append( 'image', $( '#image' )[0].files[0] );
+            data.append( 'name', name);
+            data.append('parent_id', parent_id);
+            data.append('position', position);
+            data.append('is_hot', is_hot);
+            data.append('is_active', is_active);
+
+            $.ajax({
+                type: "POST",
+                url: base_url + '/admin/category',
+                data: data,
+                // dataType : "formData",
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.error) {
+                        // console.log(response.error.image[1]);
+                        if(response.error.name) {
+                            $('.sp-name').remove();
+                            error = response.error.name[0];
+                            $('#form-name').addClass('has-error');
+                            $('#form-name').append("<span class='help-block sp-name sp-error'>"+ error +"</span>"); 
+                        } else {
+                            $('#form-name').removeClass('has-error');
+                            $('.sp-name').remove();
+                        }
+
+                        if(response.error.image) {
+                            $('.sp-image').remove();
+                            error = response.error.image[0];
+                            $('#form-image').addClass('has-error');
+                            $('#form-image').append("<span class='help-block sp-image sp-error'>"+ error +"</span>");
+                        } else {
+                            $('#form-image').removeClass('has-error');
+                            $('.sp-image').remove();
+                        }
+
+                        if(response.error.parent_id) {
+                            $('.sp-parent_id').remove();
+                            error = response.error.parent_id[0];
+                            $('#form-parent_id').append("<span class='help-block sp-parent_id sp-error'>"+ error +"</span>");
+                            $('#form-parent_id').addClass('has-error');
+                        } else {
+                            $('#form-parent_id').removeClass('has-error');
+                            $('.sp-parent_id').remove();
+                        }
+
+                        if(response.error.is_hot) {
+                            $('.sp-is_hot').remove();
+                            error = response.error.is_hot[0];
+                            $('#form-is_hot').append("<span class='help-block sp-is_hot sp-error'>"+ error +"</span>");
+                            $('#form-is_hot').addClass('has-error');
+                        } else {
+                            $('#form-is_hot').removeClass('has-error');
+                            $('.sp-is_hot').remove();
+                        }
+
+                        if(response.error.is_active) {
+                            $('.sp-is_active').remove();
+                            error = response.error.is_active[0];
+                            $('#form-is_active').append("<span class='help-block sp-is_active .sp-error'>"+ error +"</span>");
+                            $('#form-is_active').addClass('has-error');
+                        } else {
+                            $('#form-is_active').removeClass('has-error');
+                            $('.sp-is_active').remove();
+                        }
+
+                    } else {
+                        $('.sp-error').remove();
+                        $('.form-group').removeClass('has-error');
+
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        
+                        var succ = "<div class='pad margin no-print' id='thongbao'><div class='alert alert-success alert-dismissible'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><h4><i class='icon fa fa-check'></i> Thông báo !</h4>"+ response.success +"</div></div>"
+                        if ( $('#thongbao') ) {
+                            $('#thongbao').remove();
+                        }
+
+                        $('.content-header').after(succ);
+                        
+                    }
+                }
+            });
+
+            
+        }
+        
+    </script>
 @endsection

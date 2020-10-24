@@ -53,7 +53,7 @@
 
                         
 
-                        @if ($errors->has('image'))
+                        @if ($errors->has('new_image'))
                             <div class="form-group has-error">
                         @else
                             <div class="form-group">
@@ -63,7 +63,7 @@
                             @if ($tour->image)
                                 <img src="{{ asset($tour->image) }}" width="200" alt="">
                             @endif
-                            <span class="help-block">{{ $errors->first('image') }}</span>
+                            <span class="help-block">{{ $errors->first('new_image') }}</span>
                         </div>
 
 

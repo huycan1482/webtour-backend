@@ -8,10 +8,18 @@ use App\Position;
 use App\Tour;
 use App\Role;
 use App\Transport;
+// use Illuminate\Contracts\Validation\Validator;
+
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+
+use Illuminate\Support\Facades\Validator;
+
+
 
 class TourController extends Controller
 {
@@ -22,6 +30,11 @@ class TourController extends Controller
      */
     public function index(Request $request)
     {
+            
+        // Cookie::queue(Cookie::make('test', 'ahihi', 1));
+        // dd(Cookie::get('name'));
+        // dd(Auth());
+        // dd(session(),TRUE);
         $cates = [];
         $location = $request->query('diem-den');
         $number = $request->query('tinh-trang-cho');
@@ -91,6 +104,10 @@ class TourController extends Controller
      */
     public function create()
     {
+        // dd(Auth::guard('')->check());
+        // session()->forget('test');
+        // dd(session()->time_out());
+        // session()->put('timeout', time()+10);
         $categories = Category::where('is_active', 1)->orderBy('position', 'desc')->get();
 
         $transports = Transport::where('is_active', 1)->get();
@@ -111,31 +128,30 @@ class TourController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->input('start_date'));
-
-        // $cate [] = Category::where('is_active', 1)->get();
-        // dd($request->is_hot);
-        $request->validate ([
-            // 'name' => 'required|max:255|min:10|unique:tours',
-            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-            // 'category_id' => 'required|integer|exists:categories,id', 
-            // 'transport_id' => 'required|integer|exists:transports,id', 
-            // 'starting_position' => 'required|integer|exists:positions,id', 
-            // 'total_num' => 'required|integer|min:2|max:45',
-            // 'member_num'=> 'required|integer|min:0|after_or_equal:total_num', 
+        
+        // dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255|min:10|unique:tours',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            'category_id' => 'required|integer|exists:categories,id', 
+            'transport_id' => 'required|integer|exists:transports,id', 
+            'starting_position' => 'required|integer|exists:positions,id', 
+            'total_num' => 'required|integer|min:2|max:45',
+            'member_num'=> 'required|integer|min:0|after_or_equal:total_num', 
             'price' => 'required|integer|min:0|max:1000000000',
-            // 'schedule' => 'required|min:100',
-            // 'note' => 'required|min:100',
-            'price_1_2' => 'nullable|integer|min:0|max:price',
-            'price_2_5' => 'nullable|integer|min:0|max:price',
-            'price_5_11' => 'nullable|integer|min:0|max:price', 
+            'schedule' => 'required|min:100',
+            'note' => 'required|min:100',
+            'price_1_2' => 'nullable|integer|lt:price|min:0',
+            'price_2_5' => 'nullable|integer|lt:price|min:0',
+            'price_5_11' => 'nullable|integer|lt:price|min:0', 
             'price_1_2' => 'nullable|integer|min:0|max:price',  
-            // 'visa_price' => 'nullable|integer|min:0|max:1000000000', 
-            // 'discount' => 'nullable|integer|min:0|after_or_equal:price',
-            // 'start_date' => 'required|date',
-            // 'end_date' => 'required|date|after:start_date',
-            // 'position' => 'integer|max:1|min:0', 
-            // 'is_active' => 'integer|max:1|min:0',
+            'visa_price' => 'nullable|integer|min:0|max:1000000000', 
+            'discount' => 'nullable|integer|min:0|lt:price',
+            'start_date' => 'date_format:"d-m-Y"|required',
+            'end_date' => 'required|date|date_format:"d-m-Y"|after:start_date',
+            'position' => 'integer|min:0', 
+            'is_active' => 'integer|boolean',
+            'is_hot' => 'integer|boolean',
         ],[
             'name.required' => 'Yêu cầu không để trống',
             'name.unique' => 'Tên bị trùng',
@@ -172,29 +188,36 @@ class TourController extends Controller
             'end_date.required' => 'Yêu cầu không để trống',
             'price_1_2.integer' => 'Sai định dạng số' ,
             'price_1_2.min' => 'Giá trị nhỏ nhất là 0',
-            'price_1_2.after' => 'Giá trị phải nhỏ hơn giá của Tour',
+            'price_1_2.lt' => 'Giá trị phải nhỏ hơn giá của Tour',
             'price_2_5.integer' => 'Sai định dạng số' ,
             'price_2_5.min' => 'Giá trị nhỏ nhất là 0',
-            'price_2_5.after' => 'GIá trị phải nhỏ hơn giá của Tour',
+            'price_2_5.lt' => 'GIá trị phải nhỏ hơn giá của Tour',
             'price_5_11.integer' => 'Sai định dạng số' ,
             'price_5_11.min' => 'Giá trị nhỏ nhất là 0',
-            'price_5_11.after' => 'Giá trị phải nhỏ hơn giá của Tour',
+            'price_5_11.lt' => 'Giá trị phải nhỏ hơn giá của Tour',
             'visa_price.integer' => 'Sai định dạng số' ,
             'visa_price.min' => 'Giá trị nhỏ nhất là 0',
             'visa_price.max' => 'Giá trị lớn nhất là 1000000000',
             'discount.integer' => 'Sai định dạng số' ,
             'discount.min' => 'Giá trị nhỏ nhất là 0',
             'discount.after_or_equal' => 'Giá trị phải nhỏ hơn hoặc bằng giá của Tour',
-            'start_date.date' => 'Sai định dạng ngày tháng',
-            'end_date.date' => 'Sai định dạng ngày tháng',
+            'start_date.date_format' => 'Sai định dạng ngày tháng',
+            'end_date.date_format' => 'Sai định dạng ngày tháng',
             'end_date.after' => 'Ngày kết thúc phải sau ngày khởi hành',
             'is_active.integer' => 'Sai kiểu dữ liệu',
-            'is_active.min' => 'Dữ liệu không được bé hơn 0',
-            'is_active.max' => 'Dữ liệu không được lớn hơn 1',
+            'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
             'position.integer' => 'Sai kiểu dữ liệu',
-            'position.min' => 'Dữ liệu không được bé hơn 0',
-            'position.max' => 'Dữ liệu không được lớn hơn 1',
+            'position.min' => 'Giá trị nhỏ nhất là 0',
+            'is_hot.integer' => 'Sai kiểu dữ liệu',
+            'is_hot.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
         ]);
+
+        $errs = $validator->errors();
+
+        if ($validator->fails()) {
+            
+            return response()->json(['error'=>$errs]);
+        }
 
         $tour = new Tour();
 
@@ -242,10 +265,11 @@ class TourController extends Controller
         }
         $tour->user_id = Auth::user()->id;
         
-        dd($tour);
-        $tour->save();
+        // dd($tour);
+        // $tour->save();
         
-        return redirect()->route('admin.tour.index');
+        // return redirect()->route('admin.tour.index');
+        return response()->json(['success'=>'Thêm bản ghi mới thành công']);
     }
 
     /**
@@ -306,15 +330,15 @@ class TourController extends Controller
             'price' => 'required|integer|min:0|max:1000000000',
             'schedule' => 'required|min:100',
             'note' => 'required|min:100',
-            'price_2_5' => 'nullable|integer|min:0|after:price',
-            'price_5_11' => 'nullable|integer|min:0|after:price', 
-            'price_1_2' => 'nullable|integer|min:0|after:price',  
+            'price_1_2' => 'nullable|integer|lt:price|min:0',
+            'price_2_5' => 'nullable|integer|lt:price|min:0',
+            'price_5_11' => 'nullable|integer|lt:price|min:0',
             'visa_price' => 'nullable|integer|min:0|max:1000000000', 
             'discount' => 'nullable|integer|min:0|after_or_equal:price',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
-            'position' => 'integer|max:1|min:0',
-            'is_active' => 'integer|max:1|min:0',
+            'position' => 'integer|boolean',
+            'is_active' => 'integer|boolean',
         ],[          
             'name.required' => 'Yêu cầu không để trống',
             'name.unique' => 'Tên bị trùng',
@@ -352,13 +376,13 @@ class TourController extends Controller
             'end_date.required' => 'Yêu cầu không để trống',
             'price_1_2.integer' => 'Sai định dạng số' ,
             'price_1_2.min' => 'Giá trị nhỏ nhất là 0',
-            'price_1_2.after' => 'Giá trị phải nhỏ hơn giá của Tour',
+            'price_1_2.lt' => 'Giá trị phải nhỏ hơn giá của Tour',
             'price_2_5.integer' => 'Sai định dạng số' ,
             'price_2_5.min' => 'Giá trị nhỏ nhất là 0',
-            'price_2_5.after' => 'GIá trị phải nhỏ hơn giá của Tour',
+            'price_2_5.lt' => 'GIá trị phải nhỏ hơn giá của Tour',
             'price_5_11.integer' => 'Sai định dạng số' ,
             'price_5_11.min' => 'Giá trị nhỏ nhất là 0',
-            'price_5_11.after' => 'Giá trị phải nhỏ hơn giá của Tour',
+            'price_5_11.lt' => 'Giá trị phải nhỏ hơn giá của Tour',
             'visa_price.integer' => 'Sai định dạng số' ,
             'visa_price.min' => 'Giá trị nhỏ nhất là 0',
             'visa_price.max' => 'Giá trị lớn nhất là 1000000000',
@@ -369,11 +393,9 @@ class TourController extends Controller
             'end_date.date' => 'Sai định dạng ngày tháng',
             'end_date.after' => 'Ngày kết thúc phải sau ngày khởi hành',
             'is_active.integer' => 'Sai kiểu dữ liệu',
-            'is_active.min' => 'Dữ liệu không được bé hơn 0',
-            'is_active.max' => 'Dữ liệu không được lớn hơn 1',
+            'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
             'position.integer' => 'Sai kiểu dữ liệu',
-            'position.min' => 'Dữ liệu không được bé hơn 0',
-            'position.max' => 'Dữ liệu không được lớn hơn 1',
+            'position.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
         ]);
 
         $tour = Tour::findOrFail($id);
@@ -420,7 +442,7 @@ class TourController extends Controller
         if ($request->has('is_active')) {
             $is_active = $request->input('is_active');   
         }
-        $tour->is_active = json_decode($is_active);
+        $tour->is_active = (int)($is_active);
         
         if ($request->has('is_hot')) {
             $is_hot = $request->input('is_hot');

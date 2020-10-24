@@ -303,23 +303,18 @@
     <script src="/backend/dist/js/demo.js"></script>
     <script src="/backend/js/main.js"></script>
 
-    <script src="backend/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="/backend/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 
-    <script src="backend/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="/backend/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
     
     <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+    {{-- <script src="/backend/bower_components/ckeditor/ckeditor.js"></script> --}}
 
-    <script>
-    $(function() {
-        //Date picker
-        $('.datepicker').datepicker({
-            autoclose: true,
-            format: 'dd-mm-yyyy'
-        })
-    });
-    </script>
-
+    {{-- <script src="/backend/bower_components/ckfinder/ckfinder.js"></script> --}}
+    
     @yield('ck_editor')
+
+    {{-- @yield('ck_finder') --}}
 
     {{-- <script>
         CKEDITOR.replace('description');

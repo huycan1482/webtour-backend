@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 class CategoryController extends Controller
 {
@@ -55,21 +55,49 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         //validate dữ liệu gửi từ form
-        $request->validate([
+        // $request->validate([
+        //     'name' => 'required|unique:categories|max:255',
+        //     'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
+        //     'parent_id' => 'required|integer'
+        // ], [
+        //     'name.required' => 'Tên không được để trống',
+        //     'name.unique' => 'Tên bị trùng',
+        //     'image.image' => 'Ảnh không đúng định dạng',
+        //     'image.mines' => 'Ảnh không đúng định dạng',
+        //     'image.required' => 'Ảnh không được để trống',
+        //     'parent_id.required' => 'Yêu cầu không được để trống',
+        //     'parent_id.integer' => 'Không đúng định dạng'
+        // ]);
+        $validator = Validator::make($request->all(), [
             'name' => 'required|unique:categories|max:255',
-            // 'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:10000',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
-            'parent_id' => 'required|integer'
+            'parent_id' => 'required|integer|exists:categories,id',
+            'position' => 'integer|boolean', 
+            'is_active' => 'integer|boolean',
         ], [
             'name.required' => 'Tên không được để trống',
             'name.unique' => 'Tên bị trùng',
-            'image.image' => 'Ảnh không đúng định dạng',
-            'image.mines' => 'Ảnh không đúng định dạng',
             'image.required' => 'Ảnh không được để trống',
+            'image.image' => 'Ảnh không đúng định dạng',
+            'image.mimes' => 'Ảnh phải có đuôi jpeg,png,jpg,gif,svg,webp',
             'parent_id.required' => 'Yêu cầu không được để trống',
-            'parent_id.integer' => 'Không đúng định dạng'
-        ]);
+            'parent_id.integer' => 'Không đúng định dạng',
+            'parent_id.exists' => 'Dữ liệu không tồn tại',
+            'is_active.integer' => 'Sai kiểu dữ liệu',
+            'is_active.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
+            'position.integer' => 'Sai kiểu dữ liệu',
+            'position.boolean' => 'Yêu cầu dữ liệu là dạng boolean',
+        ]); 
+
+        $errs = $validator->errors();
+
+        if ($validator->fails()) {
+            
+            return response()->json(['error'=>$errs]);
+        }
+            
 
         //luu vào csdl
         $category = new Category;
@@ -91,26 +119,24 @@ class CategoryController extends Controller
         }
 
         $is_hot ="0";
-        if ($request->has('is_hot')) {//kiem tra is_active co ton tai khong?
+        if ($request->has('is_hot')) {
             $is_hot = $request->input('is_hot');
         }
-        $category->is_hot = $is_hot;
+        $category->is_hot = (int)$is_hot;
 
         $is_active = "0";
         if ($request->has('is_active')) {//kiem tra is_active co ton tai khong?
             $is_active = $request->input('is_active');
-            
         }
-        $category->is_active = $is_active;
+        $category->is_active = (int)$is_active;
 
         $category->position = $request->input('position');
         $category->user_id = Auth::user()->id;
         // dd($category);  
-        // dd($category);
-        $category->save();
+        // $category->save();
         
-        // chuyen dieu huong trang
-        return redirect()->route('admin.category.index');
+        return response()->json(['success'=>'Thêm bản ghi mới thành công']);
+        
     }
 
     /**
@@ -151,20 +177,28 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|max:255',
+        // dd($request->all());
+        
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255|unique:categories,name,'.$id,
             // 'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:10000',
             'new_image' => 'image|mimes:jpeg,png,jpg,gif,svg',
-            'parent_id' => 'required|integer'
+            'parent_id' => 'required|integer|exists:categories,parent_id'
         ], [
             'name.required' => 'Tên không được để trống',
-            // 'name.unique' => 'Tên bị trùng',
+            'name.unique' => 'Tên bị trùng',
             'new_image.image' => 'Ảnh không đúng định dạng',
             // 'image.required' => 'Ảnh không được để trống',
             'parent_id.required' => 'Yêu cầu không được để trống',
-            'parent_id.integer' => 'Không đúng định dạng'
+            'parent_id.integer' => 'Không đúng định dạng',
+            'parent_id.exists' => 'Dữ liệu không tồn tại',
         ]);
 
+        $errs = $validator->errors();
+
+        if ($validator->fails()) {
+            return response()->json(['error'=>$errs]);
+        }
 
         //luu vào csdl
         $category = Category::findOrFail($id);
@@ -202,10 +236,11 @@ class CategoryController extends Controller
         $category->position = $request->input('position');
         $category->user_id = Auth::user()->id;
         // dd($category);
-        $category->save();
+        // $category->save();
 
         // chuyen dieu huong trang
-        return redirect()->route('admin.category.index');
+        // return redirect()->route('admin.category.index');
+        return response()->json(['success'=>'Sửa bản ghi thành công']);
     }
 
     /**
@@ -227,8 +262,4 @@ class CategoryController extends Controller
         return response()->json($dataResp, 200);
     }
 
-    public function search(Request $request)
-    {
-        
-    }
 }

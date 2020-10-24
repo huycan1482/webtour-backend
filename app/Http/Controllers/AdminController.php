@@ -15,19 +15,6 @@ class AdminController extends Controller
 {
     public function index()
     {
-        //chi dinh lai ten bang protected $table = 'role';
-        // $numberOrder = Order::count();
-        // $numberArticle = Article::count();
-        // $numberProduct = Product::count();
-        // $numberUser = User::count();
-
-        // $data = [
-        //     'numOrder' => $numberOrder,
-        //     'numArticle' => $numberArticle,
-        //     'numProduct' => $numberProduct,
-        //     'numUser' => $numberUser
-        // ];
-
         $numCate = Category::count();
         $numTour = Tour::count();
         $numOrder = Order::count();
@@ -37,10 +24,74 @@ class AdminController extends Controller
             'numCate' => $numCate,
             'numTour' => $numTour,
             'numOrder' => $numOrder,
-            'numUser' => $numUser,
+            'numUser' => $numUser, 
         ];
-        return view('admin.dashboard', $data); //ten view, du lieu truyen sang view neu co
 
+        $enable_tour = count(Tour::where([['is_active', '=',  1], ['start_date', '>' , date('Y-m-d') ]] )->whereColumn('member_num', '<', "total_num")->get());
+        $outdate_tour = count(Tour::where([['is_active', '=',  1], ['start_date', '<=' , date('Y-m-d') ]])->get());
+        $outnumber_tour = count(Tour::where([['is_active', '=',  1]])->whereColumn('member_num', '>=', "total_num")->get());
+
+        for ( $i = 1; $i < 13; $i++) {
+            $country [] = count(DB::table('categories')->join('tours', 'tours.category_id', '=', 'categories.id')
+            ->join('orders', 'orders.tour_id', '=', 'tours.id')
+            ->where([['categories.parent_id', '=', 1]])
+            ->whereMonth('orders.created_at', $i)
+            ->whereYear('orders.created_at', getdate()['year']) 
+            ->get()); 
+        }
+
+        for ( $i = 1; $i < 13; $i++) {
+            $foreign [] = count(DB::table('categories')->join('tours', 'tours.category_id', '=', 'categories.id')
+            ->join('orders', 'orders.tour_id', '=', 'tours.id')
+            ->where([['categories.parent_id', '=', 2]])
+            ->whereYear('orders.created_at', getdate()['year']) 
+            ->whereMonth('orders.created_at', $i)
+            ->get()); 
+        }
+
+        // dd((getdate()['year']));
+       
+        $min_year = DB::select('select min(year(created_at)) as year from orders');
+
+        $max_year = DB::select('select max(year(created_at)) as year from orders');
+
+        $test2 = '';
+
+        $j = 0;
+        for ($i = $min_year[0]->year; $i <= $max_year[0]->year; $i++) {
+            $total [] = DB::table('orders')->whereYear('created_at', $i)->sum('price');
+            $test2 .= "['".$i."',".$total[$j].'],';
+            $j++;
+        }
+
+        
+        // dd($test2, $total[2]);
+
+        // dd($max_year[0]->year, $min_year[0]->year);
+
+        $test = '';
+
+        for ( $i=0; $i<12; $i++ ) {
+            $test .= "['T".($i+1)."',". $country[$i].','. $foreign[$i].'],';
+        }
+
+        // dd($test);
+        
+        // $january = count(DB::table('categories')->join('tours', 'tours.category_id', '=', 'categories.id')
+        //     ->join('orders', 'orders.tour_id', '=', 'tours.id')
+        //     ->where([['categories.parent_id', '=', 1]])
+        //     ->whereMonth('orders.created_at', 1)
+        //     ->get());
+
+    
+        return view('admin.dashboard', $data, [
+            'enable_tour' => $enable_tour, 
+            'outdate_tour' => $outdate_tour,
+            'outnumber_tour' => $outnumber_tour,
+            'test' => $test,
+            'test2' => $test2,
+        ]); 
+         
     }
 
     public function searchCategory(Request $request) {

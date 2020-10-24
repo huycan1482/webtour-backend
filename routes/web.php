@@ -77,3 +77,6 @@ Route::group(['middleware' => 'checkLogin'], function () {
         Route::resource('contact', 'ContactController');
     });
 });
+// Auth::routes();
+
+// Route::get('/home', 'HomeController@index')->name('home');

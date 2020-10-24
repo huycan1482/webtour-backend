@@ -207,7 +207,7 @@
                     let tour_name = response.list.data[i].name;
                     let days = response.list.data[i].days;
                     let number = response.list.data[i].total_num - response.list.data[i].member_num;
-                    let price = formatNumber(response.list.data[i].price) + 'đ';
+                    let price = formatNumber(response.list.data[i].price) + 'đ'; 
 
                     // let val_name = $('.tour-name')[i];
                     // let val_num = $('.number')[i];
