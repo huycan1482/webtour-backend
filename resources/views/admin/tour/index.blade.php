@@ -146,12 +146,11 @@
                                     {{ $item->member_num }} / {{ $item->total_num }}</span>
                                 @else
                                     <span class="label label-info">{{ $item->member_num }} / {{ $item->total_num }}</span>
-                                 @endif
+                                @endif
                             </td>
 
                             <td>
-                                <span
-                                    class="label label-{{ ($item->is_active == 1) ? 'success' : 'danger' }}">{{ ($item->is_active == 1) ? 'Hiển thị' : 'Ẩn' }}</span>
+                                <span class="label label-{{ ($item->is_active == 1) ? 'success' : 'danger' }}">{{ ($item->is_active == 1) ? 'Hiển thị' : 'Ẩn' }}</span>
                             </td>
                             <td>
                                 {{  ($item->user->name) ?? '' }}

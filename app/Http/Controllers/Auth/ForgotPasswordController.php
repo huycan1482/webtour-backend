@@ -11,6 +11,7 @@ use Illuminate\Contracts\Session\Session;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator as FacadesValidator;
 
@@ -69,7 +70,8 @@ class ForgotPasswordController extends Controller
 
     public function resetPassword(Request $request) 
     {
-        if (session()->get() < time()) {
+        // dd($request->all(), session()->get('timeOut_passForgot'), time());
+        if (session()->get('timeOut_passForgot') < time()) {
             session()->forget('code_passForgot');
             session()->forget('mail_passForgot');
             session()->forget('timeOut_passForgot');
@@ -91,7 +93,7 @@ class ForgotPasswordController extends Controller
         $pass = $request->input('password');
         $re_pass = $request->input('re_password');
 
-        if (session()->get() < time()) {
+        if (session()->get('timeOut_passForgot') < time()) {
             session()->forget('code_passForgot');
             session()->forget('mail_passForgot');
             session()->forget('timeOut_passForgot');
@@ -124,11 +126,11 @@ class ForgotPasswordController extends Controller
                     'errors' => $errors,
                 ]);
             } else {
-                $user->password = bcrypt($request->input('password'));
+                $user->password = Hash::make($request->input('password'));
                 // dd(session('success_mess'));
                 session()->forget('code_passForgot');
                 session()->forget('mail_passForgot');
-                // $user->save();
+                $user->save();
                 session()->put('success_mess', 'Cập nhập mật khẩu thành công');
                 return redirect('admin');
             }

@@ -67,7 +67,7 @@
                 Liên hệ
             </h1>
             <div class="contact-form">
-                <form action=" {{route('shop.contactRequest')}} " method="post">
+                <form action=" {{route('shop.contactRequest')}}" enctype="multipart/form-data" method="post">
                     @csrf
                     <div class="form-group">
                         @if ($errors->has('name'))

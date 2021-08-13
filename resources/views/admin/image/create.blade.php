@@ -28,7 +28,7 @@
                             <div class="form-group has-error">
                         @else
                             <div class="form-group">
-                        @endif
+                        @endif 
                             <label>Tên</label>
                             <input type="text" class="form-control" id="name" name="name" placeholder="Nhập tên">
                             <span class="help-block">{{ $errors->first('name') }}</span>
